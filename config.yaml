@@ -1,0 +1,88 @@
+feeds:
+  arxiv:
+    - url: https://rss.arxiv.org/rss/quant-ph
+      label: "arXiv quant-ph"
+    - url: https://rss.arxiv.org/rss/cond-mat.mes-hall
+      label: "arXiv cond-mat.mes-hall"
+    - url: https://rss.arxiv.org/rss/cond-mat.mtrl-sci
+      label: "arXiv cond-mat.mtrl-sci"
+
+  rss:
+    - url: http://feeds.aps.org/rss/recent/prxquantum.xml
+      label: "PRX Quantum"
+    - url: http://feeds.aps.org/rss/recent/prl.xml
+      label: "PRL"
+    - url: http://feeds.aps.org/rss/recent/pra.xml
+      label: "PRA"
+    - url: http://feeds.aps.org/rss/recent/prapplied.xml
+      label: "PRApplied"
+    - url: http://feeds.aps.org/rss/recent/prb.xml
+      label: "PRB"
+    - url: http://feeds.aps.org/rss/recent/prx.xml
+      label: "PRX"
+    - url: https://www.nature.com/ncomms.rss
+      label: "Nature Communications"
+    - url: https://www.nature.com/npjqi.rss
+      label: "npj Quantum Information"
+    - url: https://iopscience.iop.org/journal/rss/1367-2630
+      label: "New Journal of Physics"
+    - url: https://pubs.acs.org/action/showFeed?type=axatoc&feed=rss&jc=nalefd
+      label: "Nano Letters"
+    - url: https://feeds.science.org/rss/science-advances.xml
+      label: "Science Advances"
+    - url: https://opg.optica.org/rss/opex_feed.xml
+      label: "Optica Express"
+
+keywords:
+  title_weight: 3
+  abstract_weight: 1
+  groups:
+    - name: "NV centers"
+      terms:
+        - "nitrogen-vacancy"
+        - "NV center"
+        - "NV centre"
+        - "color center"
+        - "colour center"
+        - "ODMR"
+        - "diamond defect"
+        - "spin defect"
+        - "SiV center"
+        - "divacancy"
+
+    - name: "Optimal control / shortcuts to adiabaticity"
+      terms:
+        - "optimal control"
+        - "GRAPE"
+        - "CRAB"
+        - "Krotov"
+        - "quantum control"
+        - "pulse optimization"
+        - "robust control"
+        - "dynamical decoupling"
+        - "shortcuts to adiabaticity"
+        - "counterdiabatic driving"
+        - "counterdiabatic control"
+        - "transitionless quantum driving"
+        - "transitionless driving"
+        - "Lewis-Riesenfeld"
+        - "invariant-based engineering"
+        - "invariant-based control"
+        - "FAQUAD"
+        - "superadiabatic"
+        - "assisted adiabatic passage"
+        - "rapid adiabatic passage"
+        - "local adiabatic"
+        - "time-optimal control"
+
+    - name: "Many-body quantum control"
+      terms:
+        - "many-body control"
+        - "many-body quantum optimal control"
+        - "spin chain control"
+        - "quantum speed limit"
+
+scoring:
+  min_score: 1
+  two_stars: 3
+  three_stars: 6
