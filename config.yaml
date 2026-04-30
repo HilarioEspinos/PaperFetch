@@ -37,7 +37,10 @@ keywords:
   title_weight: 3
   abstract_weight: 1
   author_weight: 3      # each watched author found counts this many points
-  watched_authors: []   # e.g. ["Cirac", "Lukin", "Degen"]
+  watched_authors:
+    - "Casanova"
+    - "Budker"
+    - "Jelezko"
   groups:
     - name: "NV centers"
       terms:
