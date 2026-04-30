@@ -34,6 +34,9 @@ def _panel_title(sp: ScoredPaper, stars: str) -> Text:
     if sp.matched_groups:
         t.append("  ", style="default")
         t.append(" · ".join(sp.matched_groups), style="italic dim")
+    if sp.matched_authors and not sp.matched_groups:
+        t.append("  ", style="default")
+        t.append("Author match", style="italic magenta")
     return t
 
 
@@ -59,8 +62,13 @@ def _display_paper(sp: ScoredPaper, scoring_config: dict) -> None:
     body.append("URL: ", style="dim")
     body.append(p.url, style=f"link {p.url} underline blue")
     body.append("\n")
-    body.append("Keywords: ", style="dim")
-    body.append(", ".join(sp.matched_terms), style="italic")
+    if sp.matched_terms:
+        body.append("Keywords: ", style="dim")
+        body.append(", ".join(sp.matched_terms), style="italic")
+        body.append("\n")
+    if sp.matched_authors:
+        body.append("Author: ", style="dim")
+        body.append(", ".join(sp.matched_authors), style="bold magenta")
 
     console.print(
         Panel(

@@ -68,6 +68,23 @@ scoring:
 
 Lower `min_score` to see more papers; raise the star thresholds to make them harder to earn.
 
+### Watching specific authors
+
+Add names to `watched_authors` under `keywords`. Any paper whose author list contains one of these names (case-insensitive, partial match) will be included in the digest, even if it matches no keywords.
+
+```yaml
+keywords:
+  author_weight: 3       # points added per matched author (same scale as title_weight)
+  watched_authors:
+    - "Cirac"            # matches "J. Ignacio Cirac", "Cirac, J. I.", etc.
+    - "Lukin"
+    - "Degen"
+```
+
+Each matched author contributes `author_weight` points to the score, so a paper can earn stars through author matches alone or in combination with keyword matches. The display shows the matched name(s) highlighted in magenta below the keywords line.
+
+Set `watched_authors: []` (empty list) to disable author matching entirely.
+
 ### Adding or removing journals
 
 Each feed is listed under `feeds` in `config.yaml`. Remove a line to stop fetching that journal; add a new entry if you find another RSS feed you want:

@@ -10,16 +10,17 @@ DB_PATH = Path.home() / ".paperbot" / "seen.db"
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS papers (
-    id            TEXT PRIMARY KEY,
-    seen_date     TEXT NOT NULL,
-    title         TEXT,
-    abstract      TEXT,
-    authors       TEXT,
-    url           TEXT,
-    source        TEXT,
-    score         INTEGER,
+    id             TEXT PRIMARY KEY,
+    seen_date      TEXT NOT NULL,
+    title          TEXT,
+    abstract       TEXT,
+    authors        TEXT,
+    url            TEXT,
+    source         TEXT,
+    score          INTEGER,
     matched_groups TEXT,
-    matched_terms  TEXT
+    matched_terms  TEXT,
+    matched_authors TEXT
 );
 """
 
@@ -34,6 +35,12 @@ class PaperStore:
     def _init_schema(self) -> None:
         self.conn.executescript(_SCHEMA)
         self.conn.commit()
+        # Migration: add matched_authors column to databases created before this feature
+        try:
+            self.conn.execute("ALTER TABLE papers ADD COLUMN matched_authors TEXT DEFAULT '[]'")
+            self.conn.commit()
+        except sqlite3.OperationalError:
+            pass  # column already exists
 
     def is_seen(self, paper_id: str) -> bool:
         cur = self.conn.execute("SELECT 1 FROM papers WHERE id = ?", (paper_id,))
@@ -46,8 +53,8 @@ class PaperStore:
                 """
                 INSERT OR IGNORE INTO papers
                     (id, seen_date, title, abstract, authors, url, source,
-                     score, matched_groups, matched_terms)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     score, matched_groups, matched_terms, matched_authors)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     p.id,
@@ -60,6 +67,7 @@ class PaperStore:
                     sp.score,
                     json.dumps(sp.matched_groups),
                     json.dumps(sp.matched_terms),
+                    json.dumps(sp.matched_authors),
                 ),
             )
 
@@ -85,6 +93,7 @@ class PaperStore:
                     score=row["score"] or 0,
                     matched_groups=json.loads(row["matched_groups"] or "[]"),
                     matched_terms=json.loads(row["matched_terms"] or "[]"),
+                    matched_authors=json.loads(row["matched_authors"] or "[]"),
                 )
             )
         return results

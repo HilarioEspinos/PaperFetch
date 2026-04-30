@@ -20,6 +20,7 @@ class ScoredPaper:
     score: int
     matched_groups: list[str]
     matched_terms: list[str]
+    matched_authors: list[str] = field(default_factory=list)
 
 
 def get_star_rating(score: int, scoring_config: dict[str, int]) -> str:
@@ -35,6 +36,8 @@ def score_paper(paper: Paper, config: dict[str, Any]) -> ScoredPaper | None:
     groups = kw["groups"]
     title_weight = kw.get("title_weight", 3)
     abstract_weight = kw.get("abstract_weight", 1)
+    author_weight = kw.get("author_weight", 3)
+    watched_authors = kw.get("watched_authors") or []
     min_score = config.get("scoring", {}).get("min_score", 1)
 
     title_lower = paper.title.lower()
@@ -57,7 +60,19 @@ def score_paper(paper: Paper, config: dict[str, Any]) -> ScoredPaper | None:
             if hit:
                 matched_groups.add(group["name"])
 
-    score = len(title_terms) * title_weight + len(abstract_terms) * abstract_weight
+    # Author matching — case-insensitive substring so "Smith" matches "John Smith"
+    paper_authors_lower = [a.lower() for a in paper.authors]
+    matched_author_names: set[str] = set()
+    for watched in watched_authors:
+        w = watched.lower()
+        if any(w in pa for pa in paper_authors_lower):
+            matched_author_names.add(watched)
+
+    score = (
+        len(title_terms) * title_weight
+        + len(abstract_terms) * abstract_weight
+        + len(matched_author_names) * author_weight
+    )
     if score < min_score:
         return None
 
@@ -67,6 +82,7 @@ def score_paper(paper: Paper, config: dict[str, Any]) -> ScoredPaper | None:
         score=score,
         matched_groups=sorted(matched_groups),
         matched_terms=all_terms,
+        matched_authors=sorted(matched_author_names),
     )
 
 
