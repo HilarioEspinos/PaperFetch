@@ -10,7 +10,7 @@ import requests
 
 from filter import Paper
 
-_ARXIV_ID_RE = re.compile(r"arxiv\.org/abs/(\d{4}\.\d{4,5})")
+_ARXIV_ID_RE = re.compile(r"arXiv\.org\:(\d{4}\.\d{4,5})")
 _HTML_TAG_RE = re.compile(r"<[^>]+>")
 
 
